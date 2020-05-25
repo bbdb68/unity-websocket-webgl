@@ -81,13 +81,15 @@ var LibraryWebSocket = {
 	 * 
 	 * @param url Server URL
 	 */
-	WebSocketAllocate: function(url) {
+	WebSocketAllocate: function(url,protocol) {
 
 		var urlStr = Pointer_stringify(url);
+		var protocolStr = Pointer_stringify(protocol);
 		var id = webSocketState.lastId++;
 
 		webSocketState.instances[id] = {
 			url: urlStr,
+			protocol: protocolStr,
 			ws: null
 		};
 
@@ -133,7 +135,12 @@ var LibraryWebSocket = {
 		if (instance.ws !== null)
 			return -2;
 
-		instance.ws = new WebSocket(instance.url);
+		//instance.protocol=["wamp.2.msgpack"];
+	    console.log("connect with protocol ",instance.protocol);
+        if (instance.protocol.length>0)
+  		  instance.ws = new WebSocket(instance.url, instance.protocol);
+		else
+  		  instance.ws = new WebSocket(instance.url);
 
 		instance.ws.binaryType = 'arraybuffer';
 

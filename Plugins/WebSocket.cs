@@ -624,7 +624,7 @@ namespace HybridWebSocket
 
         /* WebSocket JSLIB callback setters and other functions */
         [DllImport("__Internal")]
-        public static extern int WebSocketAllocate(string url);
+        public static extern int WebSocketAllocate(string url, string protocol);
 
         [DllImport("__Internal")]
         public static extern void WebSocketFree(int instanceId);
@@ -736,13 +736,13 @@ namespace HybridWebSocket
         /// </summary>
         /// <returns>The WebSocket instance.</returns>
         /// <param name="url">WebSocket valid URL.</param>
-        public static WebSocket CreateInstance(string url)
+        public static WebSocket CreateInstance(string url ,string protocol=null)
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
         if (!isInitialized)
             Initialize();
 
-        int instanceId = WebSocketAllocate(url);
+        int instanceId = WebSocketAllocate(url,protocol);
         WebSocket wrapper = new WebSocket(instanceId);
         instances.Add(instanceId, wrapper);
 
